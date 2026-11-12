@@ -45,7 +45,7 @@ def load_workbook(file_bytes):
     for sheet, year in [("Master 2025", 2025), ("Master 2026", 2026), ("Master 2027", 2027)]:
         if sheet not in xl.sheet_names:
             continue
-        raw = pd.read_excel(BytesIO(file_bytes), sheet_name=sheet)
+        raw = pd.read_excel(xl, sheet_name=sheet)
         if raw.empty:
             continue
         raw.columns = [str(c).strip() for c in raw.columns]
@@ -70,7 +70,7 @@ def load_workbook(file_bytes):
         masters.append(d)
     master = pd.concat(masters, ignore_index=True) if masters else pd.DataFrame(
         columns=["ID","SKU","QTY","Nama PIC","Tanggal Completed","Tahun","Bulan","Minggu","Tanggal"])
-    cases = pd.read_excel(BytesIO(file_bytes), sheet_name="Case Pic") if "Case Pic" in xl.sheet_names else pd.DataFrame()
+    cases = pd.read_excel(xl, sheet_name="Case Pic") if "Case Pic" in xl.sheet_names else pd.DataFrame()
     if not cases.empty:
         cases.columns = [str(c).strip() for c in cases.columns]
         for c in ["Tanggal Diterima","Tanggal Complaint","ID","SKU","Qty Request","Qty Complaint","Kategori","Keterangan Tambahan","Cabang","Keterangan Case","Penyelesaian Case","Nama PIC"]:
